@@ -1,0 +1,139 @@
+{
+  "default_score": 1,
+  "keywords": {
+    "critical": [
+      "disaster",
+      "catastrophe",
+      "terror",
+      "terrorist",
+      "explosion",
+      "bombing",
+      "massacre",
+      "epidemic",
+      "pandemic",
+      "nuclear",
+      "meltdown",
+      "tsunami",
+      "earthquake",
+      "hurricane",
+      "tornado",
+      "flood",
+      "wildfire",
+      "collapsed",
+      "collapsed building"
+    ],
+    "high": [
+      "crisis",
+      "emergency",
+      "fatal",
+      "death",
+      "killed",
+      "casualties",
+      "injured",
+      "wounded",
+      "attack",
+      "shooting",
+      "war",
+      "conflict",
+      "violence",
+      "evacuation",
+      "rescue",
+      "missing",
+      "trapped"
+    ],
+    "medium": [
+      "protest",
+      "riot",
+      "unrest",
+      "strike",
+      "accident",
+      "crash",
+      "fire",
+      "storm",
+      "alert",
+      "warning",
+      "threat",
+      "investigation",
+      "outbreak",
+      "contamination"
+    ],
+    "low": [
+      "concern",
+      "issue",
+      "problem",
+      "debate",
+      "discussion",
+      "announcement",
+      "report",
+      "statement"
+    ]
+  },
+  "geographic_scope": {
+    "global": [
+      "global",
+      "worldwide",
+      "international",
+      "multiple countries",
+      "pandemic",
+      "world"
+    ],
+    "national": [
+      "national",
+      "nationwide",
+      "country",
+      "federal",
+      "capital"
+    ],
+    "regional": [
+      "regional",
+      "state",
+      "province",
+      "district",
+      "area"
+    ],
+    "local": [
+      "local",
+      "city",
+      "town",
+      "village",
+      "neighborhood"
+    ]
+  },
+  "ticker": {
+    "freshness_hours": 72,
+    "max_items": 20,
+    "categories": {
+      "airline_disaster": {
+        "emoji": "✈️",
+        "keywords_any": ["airline","aircraft","flight","plane","jet","aviation","airport"],
+        "context_any": ["crash","downed","midair","collision","fell","plunged","emergency landing","fatal","fatalities","killed","dead"]
+      },
+      "stock_swing": {
+        "emoji": "📈",
+        "finance_keywords": ["stock","shares","market","price","ticker","exchange","nasdaq","nyse"],
+        "percent_threshold": 50
+      },
+      "natural_disaster": {
+        "emoji": "🌪️",
+        "keywords_any": ["earthquake","tremor","tsunami","hurricane","cyclone","typhoon","tornado","wildfire","bushfire","flood","landslide","mudslide","volcano","eruption","storm"]
+      },
+      "war": {
+        "emoji": "🪖",
+        "keywords_any": ["war","invasion","frontline","airstrike","strike","missile","shelling","bombardment","offensive","counteroffensive","ceasefire"]
+      },
+      "terrorism": {
+        "emoji": "💥",
+        "keywords_any": ["terror","terrorist","bomb","bombing","suicide bomber","ied","extremist attack"]
+      },
+      "active_shooter": {
+        "emoji": "🚨",
+        "keywords_any": ["shooting","shooter","gunman","shots fired","mass shooting"]
+      },
+      "mass_casualty": {
+        "emoji": "🚑",
+        "keywords_any": ["mass casualty","death toll","multiple fatalities"],
+        "casualty_threshold": 10
+      }
+    }
+  }
+}

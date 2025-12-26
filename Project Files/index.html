@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crisis Management Dashboard - Real-time monitoring of global events ranked by severity">
+    <title>Crisis Management Dashboard</title>
+    <link rel="stylesheet" href="styles.css?v=20251224">
+</head>
+<body>
+    <div id="ticker" class="ticker" role="region" aria-label="Critical alerts ticker">
+        <div class="ticker-inner">
+            <div id="tickerTrack" class="ticker-track" aria-hidden="true"></div>
+        </div>
+    </div>
+    <div id="tickerEmptyBanner" class="ticker-empty-banner" role="status" aria-live="polite" style="display: none;">
+        <span class="banner-msg">Continuous monitoring active. No critical events detected within the last 2 hours.</span>
+        <button type="button" id="widenTickerWindowBtn" class="banner-btn" title="Expand to last 6 hours">Widen window</button>
+        <button type="button" id="resetTickerWindowBtn" class="banner-btn secondary" title="Reset to last 2 hours">Reset window</button>
+    </div>
+    <div class="container">
+        <div class="stock-section" aria-label="Live stock prices and watch inputs">
+            <div class="stock-left">
+                <div class="stock-header">📈 Live Prices</div>
+                <ul id="stockPrices" class="stock-prices" aria-live="polite"></ul>
+            </div>
+            <div class="stock-right">
+                <div class="stock-header">📝 Watchlist (5)</div>
+                <form id="stockForm" class="stock-form" action="#" onsubmit="return false;" aria-label="Enter up to 5 ticker symbols">
+                    <div class="stock-inputs">
+                        <input type="text" class="stock-input" placeholder="Ticker 1" aria-label="Ticker 1" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 2" aria-label="Ticker 2" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 3" aria-label="Ticker 3" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 4" aria-label="Ticker 4" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 5" aria-label="Ticker 5" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 6" aria-label="Ticker 6" maxlength="10">
+                    </div>
+                    <div class="stock-actions">
+                        <button type="button" id="fetchStocksBtn" class="stock-btn">Update Prices</button>
+                        <button type="button" id="clearStocksBtn" class="stock-btn secondary">Clear</button>
+                        <label class="remember-toggle"><input type="checkbox" id="rememberWatchlist"> Remember watchlist</label>
+                    </div>
+                    <div id="stockInfo" class="stock-info" role="status" aria-live="polite">
+                        Manual mode: click "Update Prices" to refresh quotes.
+                        <span id="stockInfoTime" class="stock-info-time"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel-divider" aria-hidden="true"></div>

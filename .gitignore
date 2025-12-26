@@ -1,0 +1,24 @@
+# .gitignore for Python/Streamlit project
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.egg-info/
+.venv/
+venv/
+frontend/venv/
+backend/venv/
+.env
+.DS_Store
+# VSCode
+.vscode/
+# Jupyter
+.ipynb_checkpoints/
+# Mac
+*.DS_Store
+# System
+Thumbs.db
+# Logs
+*.log

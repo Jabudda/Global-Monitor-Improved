@@ -1,0 +1,9 @@
+{
+  "name": "global-risk-monitor-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "echo \"Replace with actual start script\""
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crisis Management Dashboard - Real-time monitoring of global events ranked by severity">
+    <title>Crisis Management Dashboard</title>
+    <link rel="stylesheet" href="styles.css?v=20251224">
+</head>
+<body>
+    <div id="ticker" class="ticker" role="region" aria-label="Critical alerts ticker">
+        <div class="ticker-inner">
+            <div id="tickerTrack" class="ticker-track" aria-hidden="true"></div>
+        </div>
+    </div>
+    <div id="tickerEmptyBanner" class="ticker-empty-banner" role="status" aria-live="polite" style="display: none;">
+        <span class="banner-msg">Continuous monitoring active. No critical events detected within the last 2 hours.</span>
+        <button type="button" id="widenTickerWindowBtn" class="banner-btn" title="Expand to last 6 hours">Widen window</button>
+        <button type="button" id="resetTickerWindowBtn" class="banner-btn secondary" title="Reset to last 2 hours">Reset window</button>
+    </div>
+    <div class="container">
+        <div class="stock-section" aria-label="Live stock prices and watch inputs">
+            <div class="stock-left">
+                <div class="stock-header">📈 Live Prices</div>
+                <ul id="stockPrices" class="stock-prices" aria-live="polite"></ul>
+            </div>
+            <div class="stock-right">
+                <div class="stock-header">📝 Watchlist (5)</div>
+                <form id="stockForm" class="stock-form" action="#" onsubmit="return false;" aria-label="Enter up to 5 ticker symbols">
+                    <div class="stock-inputs">
+                        <input type="text" class="stock-input" placeholder="Ticker 1" aria-label="Ticker 1" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 2" aria-label="Ticker 2" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 3" aria-label="Ticker 3" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 4" aria-label="Ticker 4" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 5" aria-label="Ticker 5" maxlength="10">
+                        <input type="text" class="stock-input" placeholder="Ticker 6" aria-label="Ticker 6" maxlength="10">
+                    </div>
+                    <div class="stock-actions">
+                        <button type="button" id="fetchStocksBtn" class="stock-btn">Update Prices</button>
+                        <button type="button" id="clearStocksBtn" class="stock-btn secondary">Clear</button>
+                        <label class="remember-toggle"><input type="checkbox" id="rememberWatchlist"> Remember watchlist</label>
+                    </div>
+                    <div id="stockInfo" class="stock-info" role="status" aria-live="polite">
+                        Manual mode: click "Update Prices" to refresh quotes.
+                        <span id="stockInfoTime" class="stock-info-time"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel-divider" aria-hidden="true"></div>
+        <header>
+            <h1>🚨 Crisis Management Dashboard</h1>
+            <p class="subtitle">Real-time monitoring of global events ranked by severity</p>
+            <div id="statusBadge" class="status-badge" aria-live="polite"></div>
+            <div class="last-updated" id="lastUpdated">
+                Last updated: <span id="updateTime">Loading...</span>
+            </div>
+        </header>
+
+        <div class="filters">
+            <button class="filter-btn active" data-level="all">All Events</button>
+            <button class="filter-btn critical" data-level="Critical">Critical</button>
+            <button class="filter-btn high" data-level="High">High</button>
+            <button class="filter-btn medium" data-level="Medium">Medium</button>
+            <button class="filter-btn low" data-level="Low">Low</button>
+        </div>
+
+        <div class="dashboard-heading" title="Adjust ticker speed.">Adjustments <span class="info-icon" aria-label="More info" role="img">ℹ️</span></div>
+        <div id="dashboardAdjustments" class="dashboard-controls" aria-label="Dashboard adjustments">
+            <div id="tickerControls" class="dashboard-speed" aria-label="Ticker speed controls">
+                <span id="tickerSpeedLabel" class="ticker-speed" aria-live="polite" title="Current ticker speed"></span>
+                <button type="button" class="ticker-btn" data-action="slower" title="Slow down ticker">−</button>
+                <button type="button" class="ticker-btn" data-action="faster" title="Speed up ticker">+</button>
+                <button type="button" class="ticker-btn" data-action="reset" title="Reset ticker speed">↺</button>
+            </div>
+        </div>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalEvents">0</div>
+                <div class="stat-label">Total Events</div>
+            </div>
+            <div class="stat-card critical">
+                <div class="stat-number" id="criticalCount">0</div>
+                <div class="stat-label">Critical</div>
+            </div>
+            <div class="stat-card high">
+                <div class="stat-number" id="highCount">0</div>
+                <div class="stat-label">High</div>
+            </div>
+            <div class="stat-card medium">
+                <div class="stat-number" id="mediumCount">0</div>
+                <div class="stat-label">Medium</div>
+            </div>
+        </div>
+
+        <main>
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Loading events...</p>
+                <button type="button" id="retryLoadBtn" class="retry-btn" aria-label="Retry loading events">Retry</button>
+            </div>
+
+            <div id="error" class="error" style="display: none;">
+                <p>❌ Unable to load events. Please try again later.</p>
+            </div>
+
+            
+
+            <div id="events" class="events-container">
+                <!-- Events will be dynamically loaded here -->
+            </div>
+
+            <div id="noEvents" class="no-events" style="display: none;">
+                <p>No events match the selected filter.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Data sourced from multiple news feeds | Updates every hour</p>
+            <p>Built with ❤️ for crisis awareness</p>
+        </footer>
+    </div>
+
+    <script src="app.min.js?v=20251225-fix"></script>
+</body>
+</html>

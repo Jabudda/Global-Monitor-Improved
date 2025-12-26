@@ -1,0 +1,112 @@
+{
+  "sources": [
+    {
+      "name": "BBC News",
+      "type": "rss",
+      "url": "http://feeds.bbci.co.uk/news/world/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "Reuters World",
+      "type": "rss",
+      "url": "https://www.reuters.com/rssfeed/world",
+      "enabled": true
+    },
+    {
+      "name": "Al Jazeera",
+      "type": "rss",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml",
+      "enabled": true
+    },
+    {
+      "name": "CNN World",
+      "type": "rss",
+      "url": "http://rss.cnn.com/rss/cnn_world.rss",
+      "enabled": true
+    },
+    {
+      "name": "The Guardian World",
+      "type": "rss",
+      "url": "https://www.theguardian.com/world/rss",
+      "enabled": true
+    },
+    {
+      "name": "USGS Earthquakes",
+      "type": "rss",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom",
+      "enabled": true
+    },
+    {
+      "name": "ReliefWeb",
+      "type": "rss",
+      "url": "https://reliefweb.int/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "FEMA News",
+      "type": "rss",
+      "url": "https://www.fema.gov/about/news-multimedia/rss",
+      "enabled": true
+    },
+    {
+      "name": "AP News World",
+      "type": "rss",
+      "url": "https://apnews.com/apf-topnews",
+      "enabled": true
+    },
+    {
+      "name": "NPR World News",
+      "type": "rss",
+      "url": "https://feeds.npr.org/1004/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "Deutsche Welle",
+      "type": "rss",
+      "url": "https://rss.dw.com/xml/rss-en-all",
+      "enabled": true
+    },
+    {
+      "name": "France24",
+      "type": "rss",
+      "url": "https://www.france24.com/en/rss",
+      "enabled": true
+    },
+    {
+      "name": "Sky News World",
+      "type": "rss",
+      "url": "https://feeds.skynews.com/feeds/rss/world.xml",
+      "enabled": true
+    },
+    {
+      "name": "ABC News International",
+      "type": "rss",
+      "url": "https://abcnews.go.com/abcnews/internationalheadlines",
+      "enabled": true
+    },
+    {
+      "name": "UN News",
+      "type": "rss",
+      "url": "https://news.un.org/feed/subscribe/en/news/all/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "Red Cross",
+      "type": "rss",
+      "url": "https://www.icrc.org/en/rss",
+      "enabled": true
+    },
+    {
+      "name": "Fox News US",
+      "type": "rss",
+      "url": "https://moxie.foxnews.com/google-publisher/us.xml",
+      "enabled": true
+    },
+    {
+      "name": "Fox News World",
+      "type": "rss",
+      "url": "https://moxie.foxnews.com/google-publisher/world.xml",
+      "enabled": true
+    }
+  ]
+}
