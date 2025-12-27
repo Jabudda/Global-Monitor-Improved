@@ -230,10 +230,7 @@ def load_severity_rules():
 # Manual refresh button and timestamp
 # Only show the timestamp (hide Refresh Data button)
 
-# Use the toggle-aware last_updated_fmt for the Last updated display
-st.markdown(f"<span style='font-size:0.97em;color:#888;' title='This is the last time data was loaded from the source files.'>Last updated: <b>{last_updated_fmt}</b></span>", unsafe_allow_html=True)
-
-events_df, last_updated = load_events()
+events_df, _ = load_events()
 rules = load_severity_rules()
 
 # --- Event Scoring (simple keyword-based, can be improved) ---
@@ -578,12 +575,10 @@ def format_last_updated(ts):
     except Exception as e:
         return f"PARSE ERROR: {e} | {ts}"
 
-import datetime as dt
+
+# Unified Last Updated Display
 last_updated = pd.Timestamp.now(tz='UTC')
-
-
-last_updated_fmt = format_last_updated(last_updated)
-
+last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
 st.markdown(f"""
 <div style='background:#f8f9fa;border-radius:8px;padding:0.7em 1em;margin-bottom:1em;display:flex;gap:2em;align-items:center;'>
     <b>🗂️ {total_events} Total Events</b>
