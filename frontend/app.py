@@ -61,13 +61,7 @@ if focus_mode:
 
 # --- Minimalist Helper Information Boxes below Total Events ---
 if not focus_mode:
-    helper_col1, helper_col2, helper_col3 = st.columns(3)
-    with helper_col1:
-        st.info('**How to use:**\nAdjust ticker speed with 🐢/🐇. Filter events by severity. Click event links for details.', icon="ℹ️")
-    with helper_col2:
-        st.info('**Watchlist:**\nEnter up to 3 ticker symbols below to track live prices.', icon="📝")
-    with helper_col3:
-        st.info('**Warnings:**\nInvalid tickers are highlighted. See README for more.', icon="⚠️")
+    # Helper info boxes removed for production cleanup
 
 
 # --- Legend ---
@@ -571,7 +565,7 @@ try:
         last_updated = last_updated.tz_localize('UTC')
     last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
 except Exception as e:
-    st.error(f"Error formatting last_updated: {e}")
+    # Error formatting last_updated: {e} (removed Streamlit error for clean UI)
     last_updated_fmt = "ERROR"
 st.markdown(f"""
 <div style='background:#f8f9fa;border-radius:8px;padding:0.7em 1em;margin-bottom:1em;display:flex;gap:2em;align-items:center;'>
@@ -598,12 +592,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 helper_col1, helper_col2, helper_col3 = st.columns(3)
-with helper_col1:
-    st.info('**How to use:**\nAdjust ticker speed with 🐢/🐇. Filter events by severity. Click event links for details.', icon="ℹ️")
-with helper_col2:
-    st.info('**Watchlist:**\nEnter up to 3 ticker symbols below to track live prices.', icon="📝")
-with helper_col3:
-    st.info('**Warnings:**\nInvalid tickers are highlighted. See README for more.', icon="⚠️")
+# Helper info boxes removed for production cleanup
 
 
 # --- Event Filter Buttons ---

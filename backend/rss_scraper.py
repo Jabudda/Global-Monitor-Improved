@@ -47,7 +47,7 @@ def main():
     rules = load_severity_rules(rules_path)
     all_events = []
     for source in sources:
-        print(f"Fetching: {source['name']} ({source['url']})")
+        # Fetching: {source['name']} ({source['url']}) (removed print for clean logs)
         feed = fetch_rss(source['url'])
         for entry in feed.entries:
             event = {
@@ -67,7 +67,7 @@ def main():
     # Save events to events.json
     with open(events_path, 'w') as f:
         json.dump({'events': all_events, 'last_updated': datetime.utcnow().isoformat() + 'Z'}, f, indent=2)
-    print(f"Saved {len(all_events)} events to {events_path}")
+    # Saved {len(all_events)} events to {events_path} (removed print for clean logs)
 
 if __name__ == "__main__":
     main()
