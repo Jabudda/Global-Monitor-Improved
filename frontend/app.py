@@ -578,13 +578,6 @@ def format_last_updated(ts):
 
 
 # Ensure timezone_display and show_local are defined before using them
-timezone_display = st.sidebar.radio(
-    "Show times in:",
-    ("Local Time", "UTC"),
-    index=0,
-    help="Choose whether to display times in your local timezone or UTC."
-)
-show_local = timezone_display == "Local Time"
 
 
 # Robust Last Updated Display with checks
