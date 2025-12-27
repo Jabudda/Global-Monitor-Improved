@@ -375,7 +375,7 @@ with st.container():
     else:
         import requests
         from datetime import datetime as dt
-        nowStr = "ERROR"
+        nowStr = None
         try:
             resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
             if resp.status_code == 200:
@@ -384,6 +384,8 @@ with st.container():
                 nowStr = dt_cst.strftime('%b %d, %Y %I:%M %p CST')
         except Exception:
             pass
+        if not nowStr:
+            nowStr = "Unable to fetch CST time. Please check your internet connection or try again later."
         msgs = [
             f"⏰ {nowStr} • Continuous Monitoring Active. No Critical Events in the last {window_hours} Hours.",
             '🌟 Stay prepared; small actions save lives.',
