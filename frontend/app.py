@@ -192,7 +192,7 @@ def load_events():
 
 @st.cache_data(show_spinner=False)
 def load_severity_rules():
-    path = os.path.join(os.path.dirname(__file__), "..", "Project Files", "severity_rules.json")
+    path = os.path.join(os.path.dirname(__file__), "..", "data", "severity_rules.json")
     with open(path) as f:
         return json.load(f)
 
