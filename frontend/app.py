@@ -182,7 +182,7 @@ st.markdown(
 # --- Data Ingestion with Manual Refresh ---
 @st.cache_data(show_spinner=False)
 def load_events():
-    path = os.path.join(os.path.dirname(__file__), "..", "data", "events.json")
+    path = os.path.join(os.path.dirname(__file__), "..", "Project Files", "events.json")
     with open(path) as f:
         data = json.load(f)
     return pd.DataFrame(data["events"]), data.get("last_updated", "N/A")
