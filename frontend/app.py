@@ -563,7 +563,6 @@ st.markdown(f"""
     <span style='color:#f49d37'><b>{high_count} High</b></span>
     <span style='color:#3f88c5'><b>{medium_count} Medium</b></span>
     <span style='color:#43aa8b'><b>{low_count} Low</b></span>
-    <span style='margin-left:auto;font-size:0.95em;'>Last updated: {last_updated_fmt}</span>
 </div>
 """, unsafe_allow_html=True)
 
