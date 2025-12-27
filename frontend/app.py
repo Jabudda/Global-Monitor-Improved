@@ -123,7 +123,6 @@ last_updated = pd.Timestamp.now(tz='UTC')
 
 # Use the toggle to determine which timezone to display
 show_local = timezone_display == "Local Time"
-last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
 
 st.set_page_config(page_title="Global Risk Monitor", layout="wide")
 
