@@ -2,6 +2,8 @@ import os
 import json
 import feedparser
 from datetime import datetime
+import requests
+from bs4 import BeautifulSoup
 
 def load_sources(path):
     with open(path, 'r') as f:
@@ -39,6 +41,33 @@ def score_event(event, rules):
             break
     return matched
 
+def fetch_story_published(url):
+    try:
+        resp = requests.get(url, timeout=5)
+        if resp.status_code == 200:
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            # Try common meta tags for published date
+            for prop in [
+                {'name': 'article:published_time'},
+                {'name': 'pubdate'},
+                {'name': 'datePublished'},
+                {'name': 'publish-date'},
+                {'name': 'date'},
+                {'property': 'article:published_time'},
+                {'property': 'og:published_time'},
+                {'itemprop': 'datePublished'}
+            ]:
+                meta = soup.find('meta', attrs=prop)
+                if meta and meta.get('content'):
+                    return meta['content']
+            # Fallback: look for time tag
+            time_tag = soup.find('time')
+            if time_tag and time_tag.get('datetime'):
+                return time_tag['datetime']
+        return None
+    except Exception:
+        return None
+
 def main():
     sources_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'sources.json')
     events_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'events.json')
@@ -47,7 +76,6 @@ def main():
     rules = load_severity_rules(rules_path)
     all_events = []
     for source in sources:
-        # Fetching: {source['name']} ({source['url']}) (removed print for clean logs)
         feed = fetch_rss(source['url'])
         for entry in feed.entries:
             event = {
@@ -58,6 +86,10 @@ def main():
                 'summary': entry.get('summary', ''),
                 'fetched_at': datetime.utcnow().isoformat() + 'Z'
             }
+            # Fetch actual story published date from HTML
+            story_published = fetch_story_published(event['link'])
+            if story_published:
+                event['story_published'] = story_published
             # Apply severity rules
             scored = score_event(event, rules)
             event['severity'] = scored['severity']
