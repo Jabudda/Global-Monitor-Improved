@@ -407,7 +407,6 @@ def fetch_cst_last_updated():
         pass
     return "ERROR"
 
-        # ...existing code...
 st.markdown(f"""
 <div class='ticker-inner' style='overflow:hidden;white-space:nowrap;width:100%;'>
     <marquee behavior='scroll' direction='left' scrollamount='{scroll_speed}' style='font-size:1.1em;color:#888;font-weight:600;'>
