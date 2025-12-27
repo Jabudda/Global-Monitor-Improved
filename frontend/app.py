@@ -622,9 +622,9 @@ def event_card(row):
     title = row["title"]
     url = row.get("url", "")
     if url and url.startswith("http"):
-        title_md = f"<a href='{url}' target='_blank' style='text-decoration:none;color:inherit;'><b>{title}</b></a>"
+        title_md = f"[{title}]({url})"
     else:
-        title_md = f"<b>{title}</b>"
+        title_md = title
     desc = row.get("description", "")
     source = row.get("source", "Unknown")
     score = row["computed_score"]
