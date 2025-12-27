@@ -702,6 +702,16 @@ else:
 recent_cutoff = now_utc - pd.Timedelta(hours=24)
 # Use story_published_dt if available, else published_dt
 events_df["display_dt"] = events_df["story_published_dt"].combine_first(events_df["published_dt"])
+
+# Debug output for event filtering
+st.write("## DEBUG: Event Filtering")
+st.write(f"recent_cutoff: {recent_cutoff}")
+st.write(f"Total events loaded: {len(events_df)}")
+st.write(f"Events with display_dt >= recent_cutoff: {sum(events_df['display_dt'] >= recent_cutoff)}")
+st.write("CRITICAL events in last 24h:")
+st.write(events_df[(events_df['display_dt'] >= recent_cutoff) & (events_df['severity_label'] == 'CRITICAL')][['title','display_dt','severity_label']])
+st.write("All display_dt min/max:", events_df['display_dt'].min(), events_df['display_dt'].max())
+
 recent_df = events_df[events_df["display_dt"] >= recent_cutoff].copy()
 recent_df = recent_df.sort_values("display_dt", ascending=False)
 
