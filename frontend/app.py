@@ -91,6 +91,14 @@ import json
 import os
 import yfinance as yf
 
+# --- Timezone Toggle ---
+timezone_display = st.sidebar.radio(
+    "Show times in:",
+    ("Local Time", "UTC"),
+    index=0,
+    help="Choose whether to display times in your local timezone or UTC."
+)
+
 # --- Timezone Setup (must be before formatting functions) ---
 import tzlocal
 try:
@@ -98,6 +106,31 @@ try:
 except Exception:
     local_tz = None
 
+# --- Last Updated Formatting ---
+def format_last_updated(ts, use_local=True):
+    try:
+        if use_local and local_tz is not None:
+            # Ensure ts is timezone-aware in UTC
+            if hasattr(ts, 'tzinfo') and ts.tzinfo is None:
+                ts = ts.tz_localize('UTC')
+            ts_local = ts.tz_convert(local_tz)
+            return ts_local.strftime("%b %d, %Y, %I:%M %p (%Z)")
+        else:
+            # Ensure ts is timezone-aware in UTC
+            if hasattr(ts, 'tzinfo') and ts.tzinfo is None:
+                ts = ts.tz_localize('UTC')
+            ts_utc = ts.tz_convert('UTC')
+            return ts_utc.strftime("%b %d, %Y, %I:%M %p UTC")
+    except Exception as e:
+        return f"PARSE ERROR: {e} | {ts}"
+
+
+# Always use a timezone-aware UTC timestamp
+last_updated = pd.Timestamp.utcnow().tz_localize('UTC')
+
+# Use the toggle to determine which timezone to display
+show_local = timezone_display == "Local Time"
+last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
 
 st.set_page_config(page_title="Global Risk Monitor", layout="wide")
 
@@ -198,14 +231,9 @@ def load_severity_rules():
 
 # Manual refresh button and timestamp
 # Only show the timestamp (hide Refresh Data button)
-try:
-    local_tz = tzlocal.get_localzone()
-    now_utc = dt.datetime.utcnow().replace(tzinfo=dt.timezone.utc)
-    now_local = now_utc.astimezone(local_tz)
-    local_str = now_local.strftime('%b %d, %Y, %I:%M %p (%Z)')
-except Exception:
-    local_str = pd.Timestamp.utcnow().strftime('%b %d, %Y, %I:%M %p UTC')
-st.markdown(f"<span style='font-size:0.97em;color:#888;' title='This is the last time data was loaded from the source files.'>Last updated: <b>{local_str}</b></span>", unsafe_allow_html=True)
+
+# Use the toggle-aware last_updated_fmt for the Last updated display
+st.markdown(f"<span style='font-size:0.97em;color:#888;' title='This is the last time data was loaded from the source files.'>Last updated: <b>{last_updated_fmt}</b></span>", unsafe_allow_html=True)
 
 events_df, last_updated = load_events()
 rules = load_severity_rules()
