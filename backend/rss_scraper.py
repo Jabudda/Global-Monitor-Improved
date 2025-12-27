@@ -83,33 +83,35 @@ PUBLISHED_DATE_SELECTORS = {
 
 def fetch_story_published(url):
     try:
+        print(f"[DEBUG] Fetching story published date for: {url}")
         resp = requests.get(url, timeout=5)
         if resp.status_code != 200:
+            print(f"[DEBUG] HTTP status {resp.status_code} for {url}")
             return None
         soup = BeautifulSoup(resp.text, 'html.parser')
         domain = urlparse(url).netloc
-        # Remove subdomains for matching
         domain_parts = domain.split('.')
         if len(domain_parts) > 2:
             domain = '.'.join(domain_parts[-3:]) if domain_parts[-2] in ("co", "com", "org", "net") else '.'.join(domain_parts[-2:])
         selectors = PUBLISHED_DATE_SELECTORS.get(domain, [])
-        # Try site-specific selectors
         for sel in selectors:
             tag = sel["tag"]
             attr = sel.get("attr", {})
             if tag == "meta":
                 meta = soup.find("meta", attrs=attr)
                 if meta and meta.get("content"):
+                    print(f"[DEBUG] Found meta published date for {url}: {meta['content']}")
                     return meta["content"]
             elif tag == "time":
                 time_tag = soup.find("time", attrs={k: v for k, v in attr.items() if v is not True})
                 if time_tag and ("datetime" in time_tag.attrs):
+                    print(f"[DEBUG] Found <time> published date for {url}: {time_tag['datetime']}")
                     return time_tag["datetime"]
             else:
                 el = soup.find(tag, attrs=attr)
                 if el and el.text:
+                    print(f"[DEBUG] Found tag published date for {url}: {el.text.strip()}")
                     return el.text.strip()
-        # Fallback: try common meta tags
         for prop in [
             {"name": "article:published_time"},
             {"name": "pubdate"},
@@ -122,13 +124,16 @@ def fetch_story_published(url):
         ]:
             meta = soup.find('meta', attrs=prop)
             if meta and meta.get('content'):
+                print(f"[DEBUG] Found fallback meta published date for {url}: {meta['content']}")
                 return meta['content']
-        # Fallback: look for time tag
         time_tag = soup.find('time')
         if time_tag and time_tag.get('datetime'):
+            print(f"[DEBUG] Found fallback <time> published date for {url}: {time_tag['datetime']}")
             return time_tag['datetime']
+        print(f"[DEBUG] No published date found for {url}")
         return None
-    except Exception:
+    except Exception as e:
+        print(f"[DEBUG] Exception fetching published date for {url}: {e}")
         return None
 
 def main():
@@ -139,6 +144,7 @@ def main():
     rules = load_severity_rules(rules_path)
     all_events = []
     for source in sources:
+        print(f"[DEBUG] Fetching feed: {source['name']} ({source['url']})")
         feed = fetch_rss(source['url'])
         for entry in feed.entries:
             event = {
@@ -149,11 +155,13 @@ def main():
                 'summary': entry.get('summary', ''),
                 'fetched_at': datetime.utcnow().isoformat() + 'Z'
             }
-            # Fetch actual story published date from HTML
+            print(f"[DEBUG] Processing event: {event['title']} | {event['link']}")
             story_published = fetch_story_published(event['link'])
             if story_published:
+                print(f"[DEBUG] Saving story_published for event: {story_published}")
                 event['story_published'] = story_published
-            # Apply severity rules
+            else:
+                print(f"[DEBUG] No story_published found for event.")
             scored = score_event(event, rules)
             event['severity'] = scored['severity']
             event['scope'] = scored['scope']
