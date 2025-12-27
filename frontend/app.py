@@ -574,16 +574,23 @@ def format_last_updated(ts):
 
 
 
-# Robust Last Updated Display with checks
-if 'show_local' not in locals():
-    st.warning("show_local not defined, defaulting to UTC.")
-    show_local = False
-if 'last_updated' not in locals() or not isinstance(last_updated, pd.Timestamp):
-    st.warning(f"last_updated not defined or not a pandas Timestamp, defaulting to now (UTC). Value: {repr(locals().get('last_updated', None))}")
-    last_updated = pd.Timestamp.now(tz='UTC')
-if last_updated.tzinfo is None:
-    last_updated = last_updated.tz_localize('UTC')
-last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
+
+# Robust Last Updated Display with diagnostics and safe fallback
+st.warning(f"last_updated type: {type(locals().get('last_updated', None))}, value: {repr(locals().get('last_updated', None))}")
+st.warning(f"show_local type: {type(locals().get('show_local', None))}, value: {repr(locals().get('show_local', None))}")
+try:
+    if 'show_local' not in locals():
+        st.warning("show_local not defined, defaulting to UTC.")
+        show_local = False
+    if 'last_updated' not in locals() or not isinstance(last_updated, pd.Timestamp):
+        st.warning(f"last_updated not defined or not a pandas Timestamp, defaulting to now (UTC). Value: {repr(locals().get('last_updated', None))}")
+        last_updated = pd.Timestamp.now(tz='UTC')
+    if last_updated.tzinfo is None:
+        last_updated = last_updated.tz_localize('UTC')
+    last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
+except Exception as e:
+    st.error(f"Error formatting last_updated: {e}")
+    last_updated_fmt = "ERROR"
 st.markdown(f"""
 <div style='background:#f8f9fa;border-radius:8px;padding:0.7em 1em;margin-bottom:1em;display:flex;gap:2em;align-items:center;'>
     <b>🗂️ {total_events} Total Events</b>
