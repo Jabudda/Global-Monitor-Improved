@@ -386,20 +386,20 @@ with st.container():
         '💡 Keep an emergency kit stocked.',
         '🫶 Breathe and focus; you’ve got this.'
     ]
-    else:
-        import requests
-        from datetime import datetime as dt
-        nowStr = None
-        try:
-            resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
-            if resp.status_code == 200:
-                data = resp.json()
-                dt_cst = datetime.fromisoformat(data["datetime"][:-1])
-                nowStr = dt_cst.strftime('%b %d, %Y %I:%M %p CST')
-        except Exception:
-            pass
-        if not nowStr:
-            nowStr = "Unable to fetch CST time. Please check your internet connection or try again later."
+    # Fallback ticker code for when there are no critical events
+    import requests
+    from datetime import datetime as dt
+    nowStr = None
+    try:
+        resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
+        if resp.status_code == 200:
+            data = resp.json()
+            dt_cst = datetime.fromisoformat(data["datetime"][:-1])
+            nowStr = dt_cst.strftime('%b %d, %Y %I:%M %p CST')
+    except Exception:
+        pass
+    if not nowStr:
+        nowStr = "Unable to fetch CST time. Please check your internet connection or try again later."
 def fetch_cst_last_updated():
     try:
         resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
