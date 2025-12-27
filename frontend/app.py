@@ -61,8 +61,6 @@ if focus_mode:
     focus_hide_block()
 
 # --- Minimalist Helper Information Boxes below Total Events ---
-if not focus_mode:
-    # Helper info boxes removed for production cleanup
 
 
 # --- Legend ---
