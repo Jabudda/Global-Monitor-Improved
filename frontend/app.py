@@ -1,5 +1,6 @@
 # --- Imports (must be at the very top) ---
 import streamlit as st
+import time
 import pandas as pd
 import json
 import os
@@ -118,7 +119,14 @@ last_updated = pd.Timestamp.now(tz='UTC')
 # Use the toggle to determine which timezone to display
 show_local = timezone_display == "Local Time"
 
+
 st.set_page_config(page_title="Global Risk Monitor", layout="wide")
+
+# --- Auto-refresh every minute ---
+st_autorefresh = st.experimental_rerun if hasattr(st, 'experimental_rerun') else None
+if st_autorefresh:
+    st_autorefresh_interval = 60  # seconds
+    st.markdown("<meta http-equiv='refresh' content='60'>", unsafe_allow_html=True)
 
 # --- Accessibility: Keyboard Navigation Hints & ARIA Labels ---
 st.markdown(
@@ -398,7 +406,10 @@ with st.container():
         """, unsafe_allow_html=True)
     else:
         from datetime import datetime as dt
-        nowStr = dt.now().strftime('%b %d, %Y %I:%M %p')
+        import pytz
+        cst = pytz.timezone('US/Central')
+        now_cst = dt.now(cst)
+        nowStr = now_cst.strftime('%b %d, %Y %I:%M %p CST')
         msgs = [
             f"⏰ {nowStr} • Continuous Monitoring Active. No Critical Events in the last {window_hours} Hours.",
             '🌟 Stay prepared; small actions save lives.',
