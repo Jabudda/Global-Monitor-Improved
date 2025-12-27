@@ -405,12 +405,17 @@ with st.container():
         </div>
         """, unsafe_allow_html=True)
     else:
+        import requests
         from datetime import datetime as dt
-        import pytz
-        cst = pytz.timezone('US/Central')
-        now_local = dt.now()
-        now_cst = now_local.astimezone(cst)
-        nowStr = now_cst.strftime('%b %d, %Y %I:%M %p CST')
+        nowStr = "ERROR"
+        try:
+            resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
+            if resp.status_code == 200:
+                data = resp.json()
+                dt_cst = datetime.fromisoformat(data["datetime"][:-1])
+                nowStr = dt_cst.strftime('%b %d, %Y %I:%M %p CST')
+        except Exception:
+            pass
         msgs = [
             f"⏰ {nowStr} • Continuous Monitoring Active. No Critical Events in the last {window_hours} Hours.",
             '🌟 Stay prepared; small actions save lives.',
@@ -419,6 +424,19 @@ with st.container():
             '💡 Keep an emergency kit stocked.',
             '🫶 Breathe and focus; you’ve got this.'
         ]
+        # --- Helper for CST last updated ---
+        def fetch_cst_last_updated():
+            import requests
+            from datetime import datetime as dt
+            try:
+                resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    dt_cst = datetime.fromisoformat(data["datetime"][:-1])
+                    return dt_cst.strftime('%b %d, %Y, %I:%M %p CST')
+            except Exception:
+                pass
+            return "ERROR"
         st.markdown(f"""
         <div class='ticker-inner' style='overflow:hidden;white-space:nowrap;width:100%;'>
             <marquee behavior='scroll' direction='left' scrollamount='{scroll_speed}' style='font-size:1.1em;color:#888;font-weight:600;'>
@@ -567,18 +585,7 @@ except Exception:
 
 
 
-# Robust Last Updated Display with diagnostics and safe fallback
-try:
-    if 'show_local' not in locals():
-        show_local = False
-    if 'last_updated' not in locals() or not isinstance(last_updated, pd.Timestamp):
-        last_updated = pd.Timestamp.now(tz='UTC')
-    if last_updated.tzinfo is None:
-        last_updated = last_updated.tz_localize('UTC')
-    last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
-except Exception as e:
-    # Error formatting last_updated: {e} (removed Streamlit error for clean UI)
-    last_updated_fmt = "ERROR"
+last_updated_fmt = fetch_cst_last_updated()
 st.markdown(f"""
 <div style='background:#f8f9fa;border-radius:8px;padding:0.7em 1em;margin-bottom:1em;display:flex;gap:2em;align-items:center;'>
     <b>🗂️ {total_events} Total Events</b>
