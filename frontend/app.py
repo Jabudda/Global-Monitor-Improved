@@ -576,6 +576,16 @@ def format_last_updated(ts):
         return f"PARSE ERROR: {e} | {ts}"
 
 
+
+# Ensure timezone_display and show_local are defined before using them
+timezone_display = st.sidebar.radio(
+    "Show times in:",
+    ("Local Time", "UTC"),
+    index=0,
+    help="Choose whether to display times in your local timezone or UTC."
+)
+show_local = timezone_display == "Local Time"
+
 # Unified Last Updated Display
 last_updated = pd.Timestamp.now(tz='UTC')
 last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
