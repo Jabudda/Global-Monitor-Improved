@@ -108,8 +108,8 @@ def format_last_updated(ts, use_local=True):
             return f"{formatted_time} ({tz_abbr})"
         else:
             return ts.strftime("%b %d, %Y, %I:%M %p UTC")
-    except Exception as e:
-        return f"PARSE ERROR: {e} | {ts}"
+    except Exception:
+        return "ERROR"
 
 
 # Always use a timezone-aware UTC timestamp
