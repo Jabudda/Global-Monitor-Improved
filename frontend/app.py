@@ -389,7 +389,6 @@ with st.container():
         if not nowStr:
             nowStr = "Unable to fetch CST time. Please check your internet connection or try again later."
         msgs = [
-            f"⏰ {nowStr} • Continuous Monitoring Active. No Critical Events in the last {window_hours} Hours.",
             '🌟 Stay prepared; small actions save lives.',
             '🧭 Verify sources; act responsibly.',
             '🤝 Check in on your community.',
