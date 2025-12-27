@@ -630,7 +630,8 @@ def event_card(row):
     score = row["computed_score"]
     label = row["severity_label"]
     # Format published date/time in user's local timezone
-    ts = row.get("published_dt")
+    # Prefer story_published if available
+    ts = row.get("story_published_dt")
     if pd.notnull(ts):
         if local_tz is not None:
             ts_local = ts.tz_convert(local_tz) if ts.tzinfo else ts.tz_localize('UTC').tz_convert(local_tz)
@@ -638,7 +639,16 @@ def event_card(row):
         else:
             ts_str = ts.strftime("%b %d, %Y, %I:%M %p UTC")
     else:
-        ts_str = "Unknown time"
+        # Fallback to published_dt
+        ts = row.get("published_dt")
+        if pd.notnull(ts):
+            if local_tz is not None:
+                ts_local = ts.tz_convert(local_tz) if ts.tzinfo else ts.tz_localize('UTC').tz_convert(local_tz)
+                ts_str = ts_local.strftime("%b %d, %Y, %I:%M %p (%Z)")
+            else:
+                ts_str = ts.strftime("%b %d, %Y, %I:%M %p UTC")
+        else:
+            ts_str = "Unknown time"
     return f"""
 <div style='border-left:6px solid {sev_color};background:#fff;border-radius:6px;padding:1em 1.2em;margin-bottom:1.1em;box-shadow:0 1px 4px #0001;'>
     <div style='font-size:1.15rem;margin-bottom:0.15em;font-weight:600;'>{title_md}</div>
@@ -670,9 +680,16 @@ except Exception:
 
 now_utc = pd.Timestamp.utcnow()
 events_df["published_dt"] = events_df["published"].apply(parse_time)
+# Parse story_published if present
+if "story_published" in events_df.columns:
+    events_df["story_published_dt"] = events_df["story_published"].apply(parse_time)
+else:
+    events_df["story_published_dt"] = pd.NaT
 recent_cutoff = now_utc - pd.Timedelta(hours=24)
-recent_df = events_df[events_df["published_dt"] >= recent_cutoff].copy()
-recent_df = recent_df.sort_values("published_dt", ascending=False)
+# Use story_published_dt if available, else published_dt
+events_df["display_dt"] = events_df["story_published_dt"].combine_first(events_df["published_dt"])
+recent_df = events_df[events_df["display_dt"] >= recent_cutoff].copy()
+recent_df = recent_df.sort_values("display_dt", ascending=False)
 
 # Filter events by selected severity
 
@@ -681,12 +698,12 @@ severity_order = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
 
 if filter_map[selected]:
     filtered_df = recent_df[recent_df["severity_label"] == filter_map[selected]]
-    filtered_df = filtered_df.sort_values("published_dt", ascending=False)
+    filtered_df = filtered_df.sort_values("display_dt", ascending=False)
 else:
     # All Events: sort by severity, then by most recent
     filtered_df = recent_df.copy()
     filtered_df["severity_rank"] = filtered_df["severity_label"].map(severity_order)
-    filtered_df = filtered_df.sort_values(["severity_rank", "published_dt"], ascending=[True, False])
+    filtered_df = filtered_df.sort_values(["severity_rank", "display_dt"], ascending=[True, False])
 
 if filtered_df.empty:
     st.info("No events found for this filter in the last 24 hours.")
