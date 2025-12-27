@@ -379,6 +379,13 @@ with st.container():
             </marquee>
         </div>
         """, unsafe_allow_html=True)
+    msgs = [
+        '🌟 Stay prepared; small actions save lives.',
+        '🧭 Verify sources; act responsibly.',
+        '🤝 Check in on your community.',
+        '💡 Keep an emergency kit stocked.',
+        '🫶 Breathe and focus; you’ve got this.'
+    ]
     else:
         import requests
         from datetime import datetime as dt
@@ -393,13 +400,6 @@ with st.container():
             pass
         if not nowStr:
             nowStr = "Unable to fetch CST time. Please check your internet connection or try again later."
-        msgs = [
-            '🌟 Stay prepared; small actions save lives.',
-            '🧭 Verify sources; act responsibly.',
-            '🤝 Check in on your community.',
-            '💡 Keep an emergency kit stocked.',
-            '🫶 Breathe and focus; you’ve got this.'
-        ]
 def fetch_cst_last_updated():
     try:
         resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
