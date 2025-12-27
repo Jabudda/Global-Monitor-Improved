@@ -29,11 +29,23 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
-      
+          echo "Checking for requirements files..."
+          if [ -f backend/requirements.txt ]; then
+            echo "Installing backend/requirements.txt:"
+            cat backend/requirements.txt
+            pip install -r backend/requirements.txt
+          elif [ -f frontend/requirements.txt ]; then
+            echo "Installing frontend/requirements.txt:"
+            cat frontend/requirements.txt
+            pip install -r frontend/requirements.txt
+          else
+            echo "No requirements.txt found, installing feedparser only."
+            pip install feedparser
+          fi
+
       - name: Run scraper
         run: |
-          python scraper/main.py
+          python backend/rss_scraper.py
       
       - name: Commit and push if changed
         run: |
