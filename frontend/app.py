@@ -239,7 +239,7 @@ events_df["severity_label"] = events_df["computed_score"].apply(get_severity_lab
 import streamlit as st
 from datetime import datetime, timedelta
 
-st.session_state['ticker_window_hours'] = 12
+st.session_state['ticker_window_hours'] = 24
 
 
 # --- Ticker Speed Calculation (marquee: scrollamount=1 is slowest, higher is faster) ---
