@@ -408,7 +408,8 @@ with st.container():
         from datetime import datetime as dt
         import pytz
         cst = pytz.timezone('US/Central')
-        now_cst = dt.now(cst)
+        now_local = dt.now()
+        now_cst = now_local.astimezone(cst)
         nowStr = now_cst.strftime('%b %d, %Y %I:%M %p CST')
         msgs = [
             f"⏰ {nowStr} • Continuous Monitoring Active. No Critical Events in the last {window_hours} Hours.",
