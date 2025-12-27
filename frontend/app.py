@@ -115,7 +115,8 @@ def format_last_updated(ts, use_local=True):
         if use_local and local_tz is not None:
             ts_local = ts.tz_convert(local_tz)
             tz_abbr = ts_local.strftime('%Z')
-            return ts_local.strftime(f"%b %d, %Y, %I:%M %p ({tz_abbr})")
+            formatted_time = ts_local.strftime("%b %d, %Y, %I:%M %p")
+            return f"{formatted_time} ({tz_abbr})"
         else:
             return ts.strftime("%b %d, %Y, %I:%M %p UTC")
     except Exception as e:
