@@ -1,0 +1,102 @@
+{
+  "default_score": 1,
+  "keywords": {
+    "critical": [
+      "disaster",
+      "catastrophe",
+      "terror",
+      "terrorist",
+      "explosion",
+      "bombing",
+      "massacre",
+      "epidemic",
+      "pandemic",
+      "nuclear",
+      "meltdown",
+      "tsunami",
+      "earthquake",
+      "hurricane",
+      "tornado",
+      "flood",
+      "wildfire",
+      "collapsed",
+      "collapsed building"
+    ],
+    "high": [
+      "crisis",
+      "emergency",
+      "fatal",
+      "death",
+      "killed",
+      "casualties",
+      "injured",
+      "wounded",
+      "attack",
+      "shooting",
+      "war",
+      "conflict",
+      "violence",
+      "evacuation",
+      "rescue",
+      "missing",
+      "trapped"
+    ],
+    "medium": [
+      "protest",
+      "riot",
+      "unrest",
+      "strike",
+      "accident",
+      "crash",
+      "fire",
+      "storm",
+      "alert",
+      "warning",
+      "threat",
+      "investigation",
+      "outbreak",
+      "contamination"
+    ],
+    "low": [
+      "concern",
+      "issue",
+      "problem",
+      "debate",
+      "discussion",
+      "announcement",
+      "report",
+      "statement"
+    ]
+  },
+  "geographic_scope": {
+    "global": [
+      "global",
+      "worldwide",
+      "international",
+      "multiple countries",
+      "pandemic",
+      "world"
+    ],
+    "national": [
+      "national",
+      "nationwide",
+      "country",
+      "federal",
+      "capital"
+    ],
+    "regional": [
+      "regional",
+      "state",
+      "province",
+      "district",
+      "area"
+    ],
+    "local": [
+      "local",
+      "city",
+      "town",
+      "village",
+      "neighborhood"
+    ]
+  }
+}

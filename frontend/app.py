@@ -581,7 +581,7 @@ def format_last_updated(ts):
         return f"PARSE ERROR: {e} | {ts}"
 
 import datetime as dt
-last_updated = pd.Timestamp.utcnow()
+last_updated = pd.Timestamp.now(tz='UTC')
 
 
 last_updated_fmt = format_last_updated(last_updated)
