@@ -663,9 +663,15 @@ def event_card(row):
 
 # --- Filter to last 24 hours and sort by most recent ---
 def parse_time(ts):
+    import re
     try:
-        # Try ISO or RFC format
-        return pd.to_datetime(ts, utc=True)
+        # Remove unrecognized timezone abbreviations (e.g., 'EST', 'PST')
+        if isinstance(ts, str):
+            # Remove trailing timezone abbreviation if present
+            ts_clean = re.sub(r"\s([A-Z]{2,4})$", "", ts)
+        else:
+            ts_clean = ts
+        return pd.to_datetime(ts_clean, utc=True)
     except Exception:
         return pd.NaT
 
