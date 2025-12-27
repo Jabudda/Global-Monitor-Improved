@@ -562,8 +562,6 @@ except Exception:
 
 
 # Robust Last Updated Display with diagnostics and safe fallback
-st.warning(f"last_updated type: {type(locals().get('last_updated', None))}, value: {repr(locals().get('last_updated', None))}")
-st.warning(f"show_local type: {type(locals().get('show_local', None))}, value: {repr(locals().get('show_local', None))}")
 try:
     if 'show_local' not in locals():
         st.warning("show_local not defined, defaulting to UTC.")
