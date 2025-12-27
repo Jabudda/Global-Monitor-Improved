@@ -641,12 +641,12 @@ def event_card(row):
         ts_str = "Unknown time"
     return f"""
 <div style='border-left:6px solid {sev_color};background:#fff;border-radius:6px;padding:1em 1.2em;margin-bottom:1.1em;box-shadow:0 1px 4px #0001;'>
-    <div style='font-size:1.2rem;margin-bottom:0.2em;'>{title_md}</div>
-    <div style='font-size:0.98rem;color:#444;margin-bottom:0.3em;'>{desc}</div>
+    <div style='font-size:1.15rem;margin-bottom:0.15em;font-weight:600;'>{title_md}</div>
+    <div style='font-size:0.98rem;color:#444;margin-bottom:0.25em;'>{desc}</div>
     <div style='font-size:0.93rem;color:#888;'>
         <b style='color:{sev_color}'>{label}</b> | 📰 {source} | <b>Score:</b> {score}
     </div>
-    <div style='font-size:0.93rem;color:#888;margin-top:0.2em;'>🕒 {ts_str}</div>
+    <div style='font-size:0.93rem;color:#888;margin-top:0.15em;'>🕒 {ts_str}</div>
 </div>
 """
 
