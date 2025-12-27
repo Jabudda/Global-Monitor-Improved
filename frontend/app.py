@@ -564,10 +564,8 @@ except Exception:
 # Robust Last Updated Display with diagnostics and safe fallback
 try:
     if 'show_local' not in locals():
-        st.warning("show_local not defined, defaulting to UTC.")
         show_local = False
     if 'last_updated' not in locals() or not isinstance(last_updated, pd.Timestamp):
-        st.warning(f"last_updated not defined or not a pandas Timestamp, defaulting to now (UTC). Value: {repr(locals().get('last_updated', None))}")
         last_updated = pd.Timestamp.now(tz='UTC')
     if last_updated.tzinfo is None:
         last_updated = last_updated.tz_localize('UTC')
