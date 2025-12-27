@@ -1,4 +1,6 @@
 
+
 flask
 requests
 feedparser
+beautifulsoup4
