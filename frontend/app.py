@@ -646,7 +646,7 @@ def event_card(row):
     <div style='font-size:0.93rem;color:#888;'>
         <b style='color:{sev_color}'>{label}</b> | 📰 {source} | <b>Score:</b> {score}
     </div>
-    <div style='font-size:0.93rem;color:#888;margin-top:0.15em;'>🕒 {ts_str}</div>
+    <div style='font-size:0.93rem;color:#888;margin-top:0.15em;'>🕒 <a href='{url}' target='_blank' rel='noopener noreferrer'>{ts_str}</a></div>
 </div>
 """
 
