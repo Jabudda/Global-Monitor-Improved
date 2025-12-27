@@ -86,31 +86,6 @@ import json
 import os
 import yfinance as yf
 
-# --- Timezone Toggle ---
-timezone_display = st.sidebar.radio(
-    "Show times in:",
-    ("Local Time", "UTC"),
-    index=0,
-    help="Choose whether to display times in your local timezone or UTC."
-)
-
-
-
-# --- Last Updated Formatting ---
-def format_last_updated(ts, use_local=True):
-    try:
-        # Ensure ts is timezone-aware in UTC
-        if hasattr(ts, 'tzinfo') and ts.tzinfo is None:
-            ts = ts.tz_localize('UTC')
-        if use_local and local_tz is not None:
-            ts_local = ts.tz_convert(local_tz)
-            tz_abbr = ts_local.strftime('%Z')
-            formatted_time = ts_local.strftime("%b %d, %Y, %I:%M %p")
-            return f"{formatted_time} ({tz_abbr})"
-        else:
-            return ts.strftime("%b %d, %Y, %I:%M %p UTC")
-    except Exception:
-        return "ERROR"
 
 
 # Always use a timezone-aware UTC timestamp
