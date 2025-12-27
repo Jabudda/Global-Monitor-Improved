@@ -126,7 +126,7 @@ def format_last_updated(ts, use_local=True):
 
 
 # Always use a timezone-aware UTC timestamp
-last_updated = pd.Timestamp.utcnow().tz_localize('UTC')
+last_updated = pd.Timestamp.now(tz='UTC')
 
 # Use the toggle to determine which timezone to display
 show_local = timezone_display == "Local Time"
