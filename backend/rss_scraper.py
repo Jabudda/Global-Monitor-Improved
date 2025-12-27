@@ -41,29 +41,92 @@ def score_event(event, rules):
             break
     return matched
 
+from urllib.parse import urlparse
+
+PUBLISHED_DATE_SELECTORS = {
+    "abcnews.go.com": [
+        {"tag": "meta", "attr": {"name": "datePublished"}},
+        {"tag": "meta", "attr": {"property": "article:published_time"}},
+    ],
+    "bbc.com": [
+        {"tag": "meta", "attr": {"property": "article:published_time"}},
+        {"tag": "time", "attr": {"data-testid": "timestamp"}},
+    ],
+    "foxnews.com": [
+        {"tag": "meta", "attr": {"itemprop": "datePublished"}},
+        {"tag": "meta", "attr": {"property": "article:published_time"}},
+        {"tag": "time", "attr": {"datetime": True}},
+    ],
+    "theguardian.com": [
+        {"tag": "meta", "attr": {"property": "article:published_time"}},
+        {"tag": "time", "attr": {"itemprop": "datePublished"}},
+    ],
+    "aljazeera.com": [
+        {"tag": "meta", "attr": {"property": "article:published_time"}},
+        {"tag": "span", "attr": {"class": "date-simple"}},
+    ],
+    "france24.com": [
+        {"tag": "meta", "attr": {"property": "article:published_time"}},
+        {"tag": "span", "attr": {"class": "m-date"}},
+    ],
+    "dw.com": [
+        {"tag": "meta", "attr": {"property": "article:published_time"}},
+        {"tag": "span", "attr": {"class": "date"}},
+    ],
+    "cnn.com": [
+        {"tag": "meta", "attr": {"name": "pubdate"}},
+        {"tag": "meta", "attr": {"property": "og:pubdate"}},
+        {"tag": "meta", "attr": {"itemprop": "datePublished"}},
+        {"tag": "p", "attr": {"class": "update-time"}},
+    ],
+}
+
 def fetch_story_published(url):
     try:
         resp = requests.get(url, timeout=5)
-        if resp.status_code == 200:
-            soup = BeautifulSoup(resp.text, 'html.parser')
-            # Try common meta tags for published date
-            for prop in [
-                {'name': 'article:published_time'},
-                {'name': 'pubdate'},
-                {'name': 'datePublished'},
-                {'name': 'publish-date'},
-                {'name': 'date'},
-                {'property': 'article:published_time'},
-                {'property': 'og:published_time'},
-                {'itemprop': 'datePublished'}
-            ]:
-                meta = soup.find('meta', attrs=prop)
-                if meta and meta.get('content'):
-                    return meta['content']
-            # Fallback: look for time tag
-            time_tag = soup.find('time')
-            if time_tag and time_tag.get('datetime'):
-                return time_tag['datetime']
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, 'html.parser')
+        domain = urlparse(url).netloc
+        # Remove subdomains for matching
+        domain_parts = domain.split('.')
+        if len(domain_parts) > 2:
+            domain = '.'.join(domain_parts[-3:]) if domain_parts[-2] in ("co", "com", "org", "net") else '.'.join(domain_parts[-2:])
+        selectors = PUBLISHED_DATE_SELECTORS.get(domain, [])
+        # Try site-specific selectors
+        for sel in selectors:
+            tag = sel["tag"]
+            attr = sel.get("attr", {})
+            if tag == "meta":
+                meta = soup.find("meta", attrs=attr)
+                if meta and meta.get("content"):
+                    return meta["content"]
+            elif tag == "time":
+                time_tag = soup.find("time", attrs={k: v for k, v in attr.items() if v is not True})
+                if time_tag and ("datetime" in time_tag.attrs):
+                    return time_tag["datetime"]
+            else:
+                el = soup.find(tag, attrs=attr)
+                if el and el.text:
+                    return el.text.strip()
+        # Fallback: try common meta tags
+        for prop in [
+            {"name": "article:published_time"},
+            {"name": "pubdate"},
+            {"name": "datePublished"},
+            {"name": "publish-date"},
+            {"name": "date"},
+            {"property": "article:published_time"},
+            {"property": "og:published_time"},
+            {"itemprop": "datePublished"}
+        ]:
+            meta = soup.find('meta', attrs=prop)
+            if meta and meta.get('content'):
+                return meta['content']
+        # Fallback: look for time tag
+        time_tag = soup.find('time')
+        if time_tag and time_tag.get('datetime'):
+            return time_tag['datetime']
         return None
     except Exception:
         return None
