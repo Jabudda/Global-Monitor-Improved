@@ -109,18 +109,14 @@ except Exception:
 # --- Last Updated Formatting ---
 def format_last_updated(ts, use_local=True):
     try:
+        # Ensure ts is timezone-aware in UTC
+        if hasattr(ts, 'tzinfo') and ts.tzinfo is None:
+            ts = ts.tz_localize('UTC')
         if use_local and local_tz is not None:
-            # Ensure ts is timezone-aware in UTC
-            if hasattr(ts, 'tzinfo') and ts.tzinfo is None:
-                ts = ts.tz_localize('UTC')
             ts_local = ts.tz_convert(local_tz)
             return ts_local.strftime("%b %d, %Y, %I:%M %p (%Z)")
         else:
-            # Ensure ts is timezone-aware in UTC
-            if hasattr(ts, 'tzinfo') and ts.tzinfo is None:
-                ts = ts.tz_localize('UTC')
-            ts_utc = ts.tz_convert('UTC')
-            return ts_utc.strftime("%b %d, %Y, %I:%M %p UTC")
+            return ts.strftime("%b %d, %Y, %I:%M %p UTC")
     except Exception as e:
         return f"PARSE ERROR: {e} | {ts}"
 
