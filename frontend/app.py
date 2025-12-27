@@ -379,14 +379,14 @@ with st.container():
             </marquee>
         </div>
         """, unsafe_allow_html=True)
-    msgs = [
-        '🌟 Stay prepared; small actions save lives.',
-        '🧭 Verify sources; act responsibly.',
-        '🤝 Check in on your community.',
-        '💡 Keep an emergency kit stocked.',
-        '🫶 Breathe and focus; you’ve got this.'
-    ]
     else:
+        msgs = [
+            '🌟 Stay prepared; small actions save lives.',
+            '🧭 Verify sources; act responsibly.',
+            '🤝 Check in on your community.',
+            '💡 Keep an emergency kit stocked.',
+            '🫶 Breathe and focus; you’ve got this.'
+        ]
         import requests
         from datetime import datetime as dt
         nowStr = None
