@@ -556,19 +556,6 @@ except Exception:
 
 
 # Always use current UTC time for last_updated
-def format_last_updated(ts):
-    try:
-        # ts is a pandas Timestamp or datetime
-        if local_tz is not None:
-            if hasattr(ts, 'tz_convert'):
-                ts_local = ts.tz_convert(local_tz)
-            else:
-                ts_local = ts.astimezone(local_tz)
-            return ts_local.strftime("%b %d, %Y, %I:%M %p (%Z)")
-        else:
-            return ts.strftime("%b %d, %Y, %I:%M %p UTC")
-    except Exception as e:
-        return f"PARSE ERROR: {e} | {ts}"
 
 
 
