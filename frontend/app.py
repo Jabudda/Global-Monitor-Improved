@@ -86,11 +86,6 @@ import yfinance as yf
 
 
 
-# Always use a timezone-aware UTC timestamp
-last_updated = pd.Timestamp.now(tz='UTC')
-
-# Use the toggle to determine which timezone to display
-show_local = timezone_display == "Local Time"
 
 
 st.set_page_config(page_title="Global Risk Monitor", layout="wide")
