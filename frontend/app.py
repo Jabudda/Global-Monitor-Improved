@@ -5,6 +5,8 @@ import pandas as pd
 import json
 import os
 import yfinance as yf
+import requests
+from datetime import datetime as dt
 
 # --- Dark Mode & Focus Mode Toggles ---
 sidebar_col1, sidebar_col2 = st.sidebar.columns([1,1])
@@ -394,19 +396,16 @@ with st.container():
             '💡 Keep an emergency kit stocked.',
             '🫶 Breathe and focus; you’ve got this.'
         ]
-        # --- Helper for CST last updated ---
-        def fetch_cst_last_updated():
-            import requests
-            from datetime import datetime as dt
-            try:
-                resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
-                if resp.status_code == 200:
-                    data = resp.json()
-                    dt_cst = datetime.fromisoformat(data["datetime"][:-1])
-                    return dt_cst.strftime('%b %d, %Y, %I:%M %p CST')
-            except Exception:
-                pass
-            return "ERROR"
+def fetch_cst_last_updated():
+    try:
+        resp = requests.get("http://worldtimeapi.org/api/timezone/America/Chicago", timeout=5)
+        if resp.status_code == 200:
+            data = resp.json()
+            dt_cst = datetime.fromisoformat(data["datetime"][:-1])
+            return dt_cst.strftime('%b %d, %Y, %I:%M %p CST')
+    except Exception:
+        pass
+    return "ERROR"
         st.markdown(f"""
         <div class='ticker-inner' style='overflow:hidden;white-space:nowrap;width:100%;'>
             <marquee behavior='scroll' direction='left' scrollamount='{scroll_speed}' style='font-size:1.1em;color:#888;font-weight:600;'>
