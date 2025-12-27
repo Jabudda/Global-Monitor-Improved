@@ -577,19 +577,9 @@ def format_last_updated(ts):
 
 
 
-# Ensure timezone_display and show_local are defined before using them
 
-
-# Robust Last Updated Display with checks
-import streamlit as st
-if 'show_local' not in locals():
-    st.warning("show_local not defined, defaulting to UTC.")
-    show_local = False
-if 'last_updated' not in locals() or not isinstance(last_updated, pd.Timestamp):
-    st.warning(f"last_updated not defined or not a pandas Timestamp, defaulting to now (UTC). Value: {repr(locals().get('last_updated', None))}")
-    last_updated = pd.Timestamp.now(tz='UTC')
-if last_updated.tzinfo is None:
-    last_updated = last_updated.tz_localize('UTC')
+# Unified Last Updated Display (single definition)
+last_updated = pd.Timestamp.now(tz='UTC')
 last_updated_fmt = format_last_updated(last_updated, use_local=show_local)
 st.markdown(f"""
 <div style='background:#f8f9fa;border-radius:8px;padding:0.7em 1em;margin-bottom:1em;display:flex;gap:2em;align-items:center;'>
