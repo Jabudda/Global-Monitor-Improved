@@ -99,12 +99,7 @@ timezone_display = st.sidebar.radio(
     help="Choose whether to display times in your local timezone or UTC."
 )
 
-# --- Timezone Setup (must be before formatting functions) ---
-import tzlocal
-try:
-    local_tz = tzlocal.get_localzone()
-except Exception:
-    local_tz = None
+
 
 # --- Last Updated Formatting ---
 def format_last_updated(ts, use_local=True):
