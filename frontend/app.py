@@ -622,7 +622,7 @@ def event_card(row):
     title = row["title"]
     url = row.get("url", "")
     if url and url.startswith("http"):
-        title_md = f"[{url}]({url})"
+        title_md = f"<a href='{url}' target='_blank' rel='noopener noreferrer'>{url}</a>"
     else:
         title_md = title
     desc = row.get("description", "")
