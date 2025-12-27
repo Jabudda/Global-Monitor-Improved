@@ -406,14 +406,16 @@ def fetch_cst_last_updated():
     except Exception:
         pass
     return "ERROR"
-        st.markdown(f"""
-        <div class='ticker-inner' style='overflow:hidden;white-space:nowrap;width:100%;'>
-            <marquee behavior='scroll' direction='left' scrollamount='{scroll_speed}' style='font-size:1.1em;color:#888;font-weight:600;'>
-                {' | '.join(msgs)}
-            </marquee>
-        </div>
-        """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+
+        # ...existing code...
+st.markdown(f"""
+<div class='ticker-inner' style='overflow:hidden;white-space:nowrap;width:100%;'>
+    <marquee behavior='scroll' direction='left' scrollamount='{scroll_speed}' style='font-size:1.1em;color:#888;font-weight:600;'>
+        {' | '.join(msgs)}
+    </marquee>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
     # Streamlit buttons for widen/reset and ticker speed
     # Removed extra Widen/Reset window buttons; all controls are now in the blue box above.
