@@ -330,7 +330,12 @@ with st.container():
         for _, row in critical_recent.iterrows():
             label = row.get('ticker_label')
             category = row.get('ticker_category')
-            url = row.get('link')
+            try:
+                url = row["link"]
+                if not (isinstance(url, str) and url.startswith("http")):
+                    url = None
+            except Exception:
+                url = None
             title = row.get('title', '')
             description = row.get('description', '')
             text = f"{title} {description}".lower()
@@ -620,10 +625,13 @@ def event_card(row):
         "LOW": "#43aa8b"
     }[row["severity_label"]]
     title = row["title"]
-    url = row.get("link", "")
-    if url and url.startswith("http"):
-        title_md = f"<a href='{url}' target='_blank' rel='noopener noreferrer'>{title}</a>"
-    else:
+    try:
+        url = row["link"]
+        if isinstance(url, str) and url.startswith("http"):
+            title_md = f"<a href='{url}' target='_blank' rel='noopener noreferrer'>{title}</a>"
+        else:
+            title_md = title
+    except Exception:
         title_md = title
     desc = row.get("description", "")
     source = row.get("source", "Unknown")
